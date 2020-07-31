@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Airpods Battery</string>
+    <string name="connection_status_connected">Connected</string>
+    <string name="connection_status_notconnected">Not connected</string>
+    <string name="quick_launch">Quick App Launch</string>
+    <string name="popup_setting">Popup Setting</string>
+    <string name="app_setting">App Setting</string>
+    <string name="appsetting_info">You can set the app to run in the popup</string>
+    <string name="appsetting_info2">Touch app icon you want to change</string>
+    <string name="app_launch"> Launch</string>
+    <string name="airpods_model">Model</string>
+    <string name="notificationsetting">Notification Setting</string>
+    <string name="notificationsetting_info">Set notification period</string>
+    <string name="short_time">10 minutes</string>
+    <string name="normal_time">30 minutes</string>
+    <string name="long_time">1 hour</string>
+    <string name="app_selected">is selected</string>
+    <string name="error">Error</string>
+    <string name="battery_charging">Battery Charging Notification</string>
+    <string name="battery_charging_info">Let you know when you need to charge your AirPods</string>
+    <string name="search_name">Please enter the app name</string>
+    <string name="permission_message">Permission is needed to get battery information</string>
+    <string name="permission_title">Permission is required</string>
+</resources>
