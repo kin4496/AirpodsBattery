@@ -31,7 +31,9 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.image
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.yesButton
+import java.lang.Exception
 import java.util.*
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.timer
 
@@ -109,48 +111,68 @@ class MainActivity : AppCompatActivity() {
         val app3Pkg=sharedPref.getString("third","")
         val app4Pkg=sharedPref.getString("fourth","")
         if(app1Pkg!=""){
-            setImage(app1Pkg!!,1)
-            val name1=sharedPref.getString("first_name","")
-            mainTitle1.text=name1
-            mainApp1.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app1Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name1+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
+            try{
+                setImage(app1Pkg!!,1)
+                val name1=sharedPref.getString("first_name","")
+                mainTitle1.text=name1
+                mainApp1.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app1Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name1+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                }
+            }catch (e:Exception){
+                mainApp1.image=getDrawable(R.drawable.ic_baseline_error_24)
+                mainTitle1.text="Error"
             }
         }
         if(app2Pkg!=""){
-            setImage(app2Pkg!!,2)
-            val name2=sharedPref.getString("second_name","")
-            mainTitle2.text=name2
-            mainApp2.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app2Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name2+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
+            try{
+                setImage(app2Pkg!!,2)
+                val name2=sharedPref.getString("second_name","")
+                mainTitle2.text=name2
+                mainApp2.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app2Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name2+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                }
+            }catch (e:Exception){
+                mainApp2.image=getDrawable(R.drawable.ic_baseline_error_24)
+                mainTitle2.text="Error"
             }
         }
 
         if(app3Pkg!=""){
-            setImage(app3Pkg!!,3)
-            val name3=sharedPref.getString("third_name","")
-            mainTitle3.text=name3
-            mainApp3.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app3Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name3+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
+            try{
+                setImage(app3Pkg!!,3)
+                val name3=sharedPref.getString("third_name","")
+                mainTitle3.text=name3
+                mainApp3.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app3Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name3+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                }
+            }catch(e:Exception){
+                mainApp3.image=getDrawable(R.drawable.ic_baseline_error_24)
+                mainTitle3.text="Error"
             }
         }
         if(app4Pkg!=""){
-            setImage(app4Pkg!!,4)
-            val name4=sharedPref.getString("fourth_name","")
-            mainTitle4.text=name4
-            mainApp4.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app4Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name4+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
+            try{
+                setImage(app4Pkg!!,4)
+                val name4=sharedPref.getString("fourth_name","")
+                mainTitle4.text=name4
+                mainApp4.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app4Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name4+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                }
+            }catch (e:Exception){
+                mainApp4.image=getDrawable(R.drawable.ic_baseline_error_24)
+                mainTitle4.text="Error"
             }
         }
     }

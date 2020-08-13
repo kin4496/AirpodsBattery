@@ -140,61 +140,82 @@ class PodsForegroundService : Service() {
         val app4Pkg=sharedPref.getString("fourth","")
         if(app1Pkg!=""){
             val app1Bt: ImageView =mView.findViewById(R.id.app1)
-            app1Bt.image=packageManager.getApplicationIcon(app1Pkg!!)
             val app1title: TextView =mView.findViewById(R.id.title1)
-            val name1=sharedPref.getString("first_name","")
-            app1title.text=name1
-            app1Bt.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app1Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name1+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
-                wm.removeView(mView)
+            try{
+                app1Bt.image=packageManager.getApplicationIcon(app1Pkg!!)
+                val name1=sharedPref.getString("first_name","")
+                app1title.text=name1
+                app1Bt.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app1Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name1+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                    wm.removeView(mView)
+                }
+            }catch(e:Exception){
+                app1Bt.image=getDrawable(R.drawable.ic_baseline_error_24)
+                app1title.text="Error"
             }
         }
         if(app2Pkg!=""){
             val app2Bt: ImageView =mView.findViewById(R.id.app2)
-            app2Bt.image=packageManager.getApplicationIcon(app2Pkg!!)
             val app2title: TextView =mView.findViewById(R.id.title2)
-            val name2=sharedPref.getString("second_name","")
-            app2title.text=name2
-            app2Bt.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app2Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name2+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
-                wm.removeView(mView)
+            try{
+                app2Bt.image=packageManager.getApplicationIcon(app2Pkg!!)
+                val name2=sharedPref.getString("second_name","")
+                app2title.text=name2
+                app2Bt.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app2Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name2+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                    wm.removeView(mView)
+                }
+            }catch(e:Exception) {
+                app2Bt.image=getDrawable(R.drawable.ic_baseline_error_24)
+                app2title.text="Error"
             }
         }
         if(app3Pkg!=""){
             val app3Bt: ImageView =mView.findViewById(R.id.app3)
-            app3Bt.image=packageManager.getApplicationIcon(app3Pkg!!)
             val app3title: TextView =mView.findViewById(R.id.title3)
-            val name3=sharedPref.getString("third_name","")
-            app3title.text=name3
-            app3Bt.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app3Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name3+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
-                wm.removeView(mView)
+            try{
+                app3Bt.image=packageManager.getApplicationIcon(app3Pkg!!)
+
+                val name3=sharedPref.getString("third_name","")
+                app3title.text=name3
+                app3Bt.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app3Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name3+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                    wm.removeView(mView)
+                }
+            }catch(e:Exception){
+                app3Bt.image=getDrawable(R.drawable.ic_baseline_error_24)
+                app3title.text="Error"
             }
+
         }
         if(app4Pkg!=""){
             val app4Bt: ImageView =mView.findViewById(R.id.app4)
-            app4Bt.setImageDrawable(packageManager.getApplicationIcon(app4Pkg!!))
             val app4title: TextView =mView.findViewById(R.id.title4)
-            val name4=sharedPref.getString("fourth_name","")
-            app4title.text=name4
-            app4Bt.setOnClickListener {
-                val intent=packageManager.getLaunchIntentForPackage(app4Pkg!!)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                Toast.makeText(this,name4+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
-                startActivity(intent)
-                wm.removeView(mView)
+            try{
+                app4Bt.setImageDrawable(packageManager.getApplicationIcon(app4Pkg!!))
+                val name4=sharedPref.getString("fourth_name","")
+                app4title.text=name4
+                app4Bt.setOnClickListener {
+                    val intent=packageManager.getLaunchIntentForPackage(app4Pkg!!)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    Toast.makeText(this,name4+getString(R.string.app_launch), Toast.LENGTH_LONG).show()
+                    startActivity(intent)
+                    wm.removeView(mView)
+                }
+            }catch(e:Exception){
+                app4Bt.image=getDrawable(R.drawable.ic_baseline_error_24)
+                app4title.text="Error"
             }
         }
-
         try{
             wm.removeView(mView)
         }catch(e:Exception){ Log.e(Tag,"view not found")}

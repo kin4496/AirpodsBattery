@@ -7,7 +7,7 @@
     <string name="app_setting">App Setting</string>
     <string name="appsetting_info">You can set the app to run in the popup</string>
     <string name="appsetting_info2">Touch app icon you want to change</string>
-    <string name="app_launch"> Launch</string>
+    <string name="app_launch">"  Launch"</string>
     <string name="airpods_model">Model</string>
     <string name="notificationsetting">Notification Setting</string>
     <string name="notificationsetting_info">Set notification period</string>
