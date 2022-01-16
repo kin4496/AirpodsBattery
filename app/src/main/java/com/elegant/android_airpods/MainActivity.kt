@@ -39,6 +39,7 @@ import kotlin.concurrent.timer
 
 private const val Tag="DEBUG"
 private const val REQUEST_ACCESS_LOCATION=1001
+private const val REQUEST_BACKGROUND_LOCATION=1002
 
 class MainActivity : AppCompatActivity() {
     var bleScanner:BleScanner?=null
@@ -50,35 +51,6 @@ class MainActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
         checkAuthority()
-    }
-    private fun checkOk(){
-        val ba =
-            (getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager).adapter
-        ba.getProfileProxy(applicationContext, object : BluetoothProfile.ServiceListener {
-            override fun onServiceConnected(i: Int, bluetoothProfile: BluetoothProfile) {
-                if (i == BluetoothProfile.HEADSET) {
-                    Log.d(Tag, "BT PROXY SERVICE CONNECTED")
-                    val h = bluetoothProfile as BluetoothHeadset
-                    for (d in h.connectedDevices) {
-                        if (checkUUID(d!!)) {
-                            Log.d(Tag, "BT PROXY: AIRPODS ALREADY CONNECTED")
-                            PodsForegroundService.maybeConnected = true
-                            bleScanner= BleScanner(this@MainActivity)
-                            bleScanner?.startAirPodsScanner()
-                            PodsForegroundService.device=d
-                            break
-                        }
-                    }
-                }
-            }
-
-            override fun onServiceDisconnected(i: Int) {
-                if (i == BluetoothProfile.HEADSET) {
-                    Log.d(Tag, "BT PROXY SERVICE DISCONNECTED ")
-                    PodsForegroundService.maybeConnected = false
-                }
-            }
-        }, BluetoothProfile.HEADSET)
         timer=timer(period=2000L){
             runOnUiThread {
                 getDeviceInfo()
@@ -88,20 +60,6 @@ class MainActivity : AppCompatActivity() {
                 bleScanner?.startAirPodsScanner()
             }
         }
-    }
-    private fun checkUUID(bluetoothDevice: BluetoothDevice): Boolean {
-        val AIRPODS_UUIDS = arrayOf(
-            ParcelUuid.fromString("74ec2172-0bad-4d01-8f77-997b2be0722a"),
-            ParcelUuid.fromString("2a72e02b-7b99-778f-014d-ad0b7221ec74")
-        )
-        getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        val uuids = bluetoothDevice.uuids ?: return false
-        for (u in uuids) {
-            for (v in AIRPODS_UUIDS) {
-                if (u == v) return true
-            }
-        }
-        return false
     }
     override fun onResume() {
         super.onResume()
@@ -284,27 +242,18 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(intent2, 1)
             }
         }
-        var permissionFine= ContextCompat.checkSelfPermission(this,
-            Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-        if (!permissionFine){
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                Log.d("FroegroundService","should show request permission in access_fine_location")
-                alert(getString(R.string.permission_message), getString(R.string.permission_title)) {
-                    yesButton {
-                        // 권한 요청
-                        ActivityCompat.requestPermissions(this@MainActivity,
-                            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                            REQUEST_ACCESS_LOCATION)
-                    }
-                    noButton { finish()}
-                }.show()
-            } else {
-                ActivityCompat.requestPermissions(this,
-                    arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION)
-                    , REQUEST_ACCESS_LOCATION)
-            }
-        }else{
-            checkOk()
+
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this@MainActivity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_ACCESS_LOCATION)
+        }
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.Q&&ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_BACKGROUND_LOCATION)==PackageManager.PERMISSION_DENIED)
+        {
+            ActivityCompat.requestPermissions(this@MainActivity,
+                arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                REQUEST_BACKGROUND_LOCATION)
         }
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -316,13 +265,15 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+
         when(requestCode){
-            1001->{
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    finish()
-                }else if(grantResults.isNotEmpty()&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                    checkOk()
-                }
+            REQUEST_ACCESS_LOCATION->{
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Log.d(Tag,"access fine location granted")
+            }
+            REQUEST_BACKGROUND_LOCATION->{
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    Log.d(Tag,"access background location granted")
             }
         }
     }
